@@ -1,0 +1,1 @@
+Proyecto para el registro de beneficiarios a nivel departamental
