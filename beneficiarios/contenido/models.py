@@ -2,31 +2,8 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 # Create your models here.
-
-class Persona(models.Model):
-    cedula = models.CharField(max_length=15,verbose_name="Cédula de ciudadanía")
-    primer_nombre = models.CharField(max_length=30,verbose_name="Primer Nombre")
-    segundo_nombre = models.CharField(max_length=30,verbose_name="Segundo Nombre",null=True,blank=True)
-    primer_apellido = models.CharField(max_length=30, verbose_name="Primer Apellido")
-    segundo_apellido = models.CharField(max_length=30, verbose_name="Segundo Apellido")
-    fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
-    fecha_actualizacion = models.DateTimeField(auto_now=True, verbose_name="Fecha de Actualización")
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=("cedula",),name="Cedula de ciudadania unica"),
-        ]
-        verbose_name = "Persona"
-        verbose_name_plural = "Personas"
-
-    def __str__(self):
-        return f"{self.primer_nombre} {self.primer_apellido}"
     
 class InformacionGeografica(models.Model):
-    persona = models.OneToOneField(
-        Persona,
-        on_delete=models.CASCADE
-    )
     codigo_dane_municipio = models.CharField(max_length=5, verbose_name="Código DANE Municipio")
     nombre_municipio = models.CharField(max_length=50, verbose_name="Nombre Municipio")
     codigo_dane_centro_poblado = models.CharField(max_length=8, verbose_name="Código DANE Centro Poblado")
@@ -43,3 +20,27 @@ class InformacionGeografica(models.Model):
 
     def __str__(self):
         return f"{self.codigo_dane_municipio} - {self.nombre_municipio}"
+    
+class Persona(models.Model):
+    cedula = models.CharField(max_length=15,verbose_name="Cédula de ciudadanía")
+    primer_nombre = models.CharField(max_length=30,verbose_name="Primer Nombre")
+    segundo_nombre = models.CharField(max_length=30,verbose_name="Segundo Nombre",null=True,blank=True)
+    primer_apellido = models.CharField(max_length=30, verbose_name="Primer Apellido")
+    segundo_apellido = models.CharField(max_length=30, verbose_name="Segundo Apellido")
+    informacion_geografica = models.OneToOneField(
+        InformacionGeografica,
+        on_delete=models.CASCADE,
+        null=True
+    )
+    fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
+    fecha_actualizacion = models.DateTimeField(auto_now=True, verbose_name="Fecha de Actualización")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=("cedula",),name="Cedula de ciudadania unica"),
+        ]
+        verbose_name = "Persona"
+        verbose_name_plural = "Personas"
+
+    def __str__(self):
+        return f"{self.primer_nombre} {self.primer_apellido}"
