@@ -13,8 +13,8 @@ class Persona(models.Model):
     fecha_actualizacion = models.DateTimeField(auto_now=True, verbose_name="Fecha de Actualización")
 
     class Meta:
-        contraints = [
-            models.UniqueConstraint(fields=("cedula",),name="Cedula de ciudadania unica")
+        constraints = [
+            models.UniqueConstraint(fields=("cedula",),name="Cedula de ciudadania unica"),
         ]
         verbose_name = "Persona"
         verbose_name_plural = "Personas"
