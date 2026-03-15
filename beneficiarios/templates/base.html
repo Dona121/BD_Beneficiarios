@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      {% block title %}
+      {% endblock title %}
+    </title>
+  </head>
+  <style>
+    p {
+      font-size: 30px;
+    }
+  </style>
+  <body>
+    <div class="body">
+      {% block content %}
+      {% endblock content %}
+    </div>
+  </body>
+</html>

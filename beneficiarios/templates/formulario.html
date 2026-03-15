@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  formulario beneficiarios
+{% endblock title %}
+
+{% block content %}
+<p>Este es un formulario</p>
+<div>
+  {% for persona in personas %}
+    <p>{{persona.cedula}}</p>
+  {% endfor %}
+</div>
+
+{% endblock content %}

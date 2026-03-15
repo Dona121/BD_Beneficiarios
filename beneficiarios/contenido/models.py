@@ -20,27 +20,45 @@ class InformacionGeografica(models.Model):
 
     def __str__(self):
         return f"{self.codigo_dane_municipio} - {self.nombre_municipio}"
-    
-class Persona(models.Model):
-    cedula = models.CharField(max_length=15,verbose_name="Cédula de ciudadanía")
+
+class PersonaBase(models.Model):
+    cedula = models.CharField(max_length=15,verbose_name="Cédula de ciudadanía",unique=True)
     primer_nombre = models.CharField(max_length=30,verbose_name="Primer Nombre")
     segundo_nombre = models.CharField(max_length=30,verbose_name="Segundo Nombre",null=True,blank=True)
     primer_apellido = models.CharField(max_length=30, verbose_name="Primer Apellido")
     segundo_apellido = models.CharField(max_length=30, verbose_name="Segundo Apellido")
+    fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
+    fecha_actualizacion = models.DateTimeField(auto_now=True, verbose_name="Fecha de Actualización")
+
+    class Meta:
+        verbose_name = "Persona"
+        verbose_name_plural = "Personas"
+        abstract = True
+
+    def __str__(self):
+        return f"{self.primer_nombre} {self.primer_apellido}"
+
+class CabezaFamilia(PersonaBase):
+    es_cabeza_de_familia = models.BooleanField()
+
+    class Meta:
+        verbose_name = "Cabeza Familia"
+        verbose_name_plural = "Cabezas de Familia"
+    
+    def __str__(self):
+        return f"{self.es_cabeza_de_familia}"
+    
+class Persona(PersonaBase):
+    tipo_familiar = models.CharField(max_length=20,null=True)
     informacion_geografica = models.OneToOneField(
         InformacionGeografica,
         on_delete=models.CASCADE,
         null=True
     )
-    fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
-    fecha_actualizacion = models.DateTimeField(auto_now=True, verbose_name="Fecha de Actualización")
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=("cedula",),name="Cedula de ciudadania unica"),
-        ]
-        verbose_name = "Persona"
-        verbose_name_plural = "Personas"
+    cabeza_familia = models.ForeignKey(
+        CabezaFamilia,
+        on_delete=models.CASCADE
+    )
 
     def __str__(self):
-        return f"{self.primer_nombre} {self.primer_apellido}"
+        return f"{self.tipo_familiar}"
