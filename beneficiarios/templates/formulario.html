@@ -8,19 +8,19 @@
 <p>Este es un formulario</p>
 <div>
   {% for persona in personas %}
-    <p>{{persona.cedula}}</p>
+    <p>{{persona.cedula}} - {{ persona.primer_nombre }}</p>
   {% endfor %}
 </div>
 
-{% endblock content %}
-
-{% if page.has_other_pages %}
-  {% if page.has_previous %}
-    <a href="{% url 'formulario' %}?page={{ page.previous_page_number }}">
-      Prev</a> &nbsp;&nbsp;&nbsp;
+{% if pagina.has_other_pages %} <!-- Si es que hay mas de una pagina -->
+  {% if pagina.has_previous %} <!-- Si existe la pagina anterior, entonces creo un enlace a la pagina anterior -->
+    <a href="{% url 'formulario' %}?page={{ pagina.previous_page_number }}" style="text-decoration: None;">
+      Anterior</a> &nbsp;&nbsp;&nbsp;
   {% endif %}
-  {% if page.has_next %}
-    <a href="{% url 'formulario' %}?page={{ page.next_page_number }}">
-      Next</a>
+  {% if pagina.has_next %} <!-- Si existe la pagina siguiente, entonces creo un enlace a la pagina siguiente -->
+    <a href="{% url 'formulario' %}?page={{ pagina.next_page_number }}" style="text-decoration: None;">
+      Siguiente</a>
   {% endif %}
 {% endif %}
+
+{% endblock content %}
