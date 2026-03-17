@@ -13,3 +13,14 @@
 </div>
 
 {% endblock content %}
+
+{% if page.has_other_pages %}
+  {% if page.has_previous %}
+    <a href="{% url 'formulario' %}?page={{ page.previous_page_number }}">
+      Prev</a> &nbsp;&nbsp;&nbsp;
+  {% endif %}
+  {% if page.has_next %}
+    <a href="{% url 'formulario' %}?page={{ page.next_page_number }}">
+      Next</a>
+  {% endif %}
+{% endif %}
